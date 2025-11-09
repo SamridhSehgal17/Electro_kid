@@ -6,5 +6,5 @@ Welcome to ElectroKid, a hub where curiosity meets innovation! My name is Samrid
 
 Featured Projects
 # 1. Mario Game on 32*8 LED Strips
-I made a 32×8 LED matrix Dino Game just for fun using an Arduino Uno. It’s a mini version of the classic mario Dino, where the dino jumps over obstacles displayed on the LED strip — a simple yet creative electronics project built for experimenting and learning.
+I made a 32×8 LED matrix mario Game just for fun using an Arduino Uno. It’s a mini version of the classic mario Dino, where the dino jumps over obstacles displayed on the LED strip — a simple yet creative electronics project built for experimenting and learning.
 
