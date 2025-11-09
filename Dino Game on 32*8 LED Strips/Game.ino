@@ -1,11 +1,11 @@
 /*
- * Person Runner Game for 32x8 WS2812B LED Matrix
+ * Mario Runner Game for 32x8 WS2812B LED Matrix
  * Hardware: Arduino Uno + WS2812B 32x8 + 2 Buttons
  *
  * Features:
  * - Random obstacle shapes each time
  * - Speed increases after every 1 obstacle
- * - Person has a 4-row-tall shape with helmet head
+ * - Mario has a 4-row-tall shape with helmet head
  */
 
 #include <Adafruit_NeoPixel.h>
@@ -28,15 +28,15 @@
 Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 // Colors
-uint32_t COLOR_PERSON = strip.Color(0, 255, 0);      // Green
+uint32_t COLOR_MARIO = strip.Color(0, 255, 0);       // Green
 uint32_t COLOR_OBSTACLE = strip.Color(255, 0, 0);    // Red
 uint32_t COLOR_GROUND = strip.Color(100, 100, 100);  // Gray
 uint32_t COLOR_SCORE = strip.Color(0, 0, 255);       // Blue
 
-// Person
-int personX = 3;
-int personY = 5;  // slightly raised
-int personVelocity = 0;
+// Mario
+int marioX = 3;
+int marioY = 5;  // slightly raised
+int marioVelocity = 0;
 bool isJumping = false;
 bool isDucking = false;
 
@@ -80,18 +80,18 @@ void loop() {
     // Read inputs
     if (digitalRead(JUMP_BTN) == LOW && !isJumping && !isDucking) {
       isJumping = true;
-      personVelocity = JUMP_FORCE;
+      marioVelocity = JUMP_FORCE;
     }
     isDucking = (digitalRead(DUCK_BTN) == LOW);
 
     // Physics
     if (isJumping) {
-      personY -= personVelocity;
-      personVelocity -= GRAVITY;
-      if (personY >= 5) {
-        personY = 5;
+      marioY -= marioVelocity;
+      marioVelocity -= GRAVITY;
+      if (marioY >= 5) {
+        marioY = 5;
         isJumping = false;
-        personVelocity = 0;
+        marioVelocity = 0;
       }
     }
 
@@ -132,23 +132,23 @@ void setPixel(int x, int y, uint32_t color) {
   if (index >= 0 && index < NUM_LEDS) strip.setPixelColor(index, color);
 }
 
-// --- Draw Person (with helmet top) ---
-void drawPerson(int x, int y, bool ducking) {
+// --- Draw Mario (with helmet top) ---
+void drawMario(int x, int y, bool ducking) {
   if (ducking) {
     // Crouch (compact)
-    setPixel(x - 1, y, COLOR_PERSON);
-    setPixel(x,     y, COLOR_PERSON);
-    setPixel(x + 1, y, COLOR_PERSON);
-    setPixel(x,     y + 1, COLOR_PERSON);
+    setPixel(x - 1, y, COLOR_MARIO);
+    setPixel(x,     y, COLOR_MARIO);
+    setPixel(x + 1, y, COLOR_MARIO);
+    setPixel(x,     y + 1, COLOR_MARIO);
   } else {
     // Tall with helmet
-    setPixel(x, y - 1, COLOR_PERSON);    // top helmet pixel
-    setPixel(x - 1, y, COLOR_PERSON);
-    setPixel(x,     y, COLOR_PERSON);
-    setPixel(x + 1, y, COLOR_PERSON);
-    setPixel(x,     y + 1, COLOR_PERSON);
-    setPixel(x - 1, y + 2, COLOR_PERSON);
-    setPixel(x + 1, y + 2, COLOR_PERSON);
+    setPixel(x, y - 1, COLOR_MARIO);    // top helmet pixel
+    setPixel(x - 1, y, COLOR_MARIO);
+    setPixel(x,     y, COLOR_MARIO);
+    setPixel(x + 1, y, COLOR_MARIO);
+    setPixel(x,     y + 1, COLOR_MARIO);
+    setPixel(x - 1, y + 2, COLOR_MARIO);
+    setPixel(x + 1, y + 2, COLOR_MARIO);
   }
 }
 
@@ -158,8 +158,8 @@ void drawGame() {
   // Ground line
   for (int xc = 0; xc < MATRIX_WIDTH; xc++) setPixel(xc, 7, COLOR_GROUND);
 
-  // Draw person
-  drawPerson(personX, personY, isDucking && !isJumping);
+  // Draw Mario
+  drawMario(marioX, marioY, isDucking && !isJumping);
 
   // Draw obstacle
   for (int w = 0; w < obstacleWidth; w++) {
@@ -176,10 +176,10 @@ void drawGame() {
 }
 
 bool checkCollision() {
-  int left = personX - 1;
-  int right = personX + 1;
-  int top = personY - 1;
-  int bottom = personY + ((isDucking && !isJumping) ? 1 : 2);
+  int left = marioX - 1;
+  int right = marioX + 1;
+  int top = marioY - 1;
+  int bottom = marioY + ((isDucking && !isJumping) ? 1 : 2);
 
   for (int w = 0; w < obstacleWidth; w++) {
     int obsX = obstacleX - w;
@@ -220,8 +220,8 @@ void displayGameOver() {
 }
 
 void resetGame() {
-  personY = 5;
-  personVelocity = 0;
+  marioY = 5;
+  marioVelocity = 0;
   isJumping = false;
   isDucking = false;
   obstacleX = MATRIX_WIDTH - 1;
@@ -230,4 +230,3 @@ void resetGame() {
   gameOver = false;
   Serial.println("Game Started!");
 }
-
