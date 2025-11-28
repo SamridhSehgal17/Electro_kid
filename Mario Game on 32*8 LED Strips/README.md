@@ -1,4 +1,4 @@
-# 🎮 Customised Gyro Gamepad  
+# 🎮 Mario-style Dino Jump Game
 A fun DIY Mario-style Dino Jump Game built on a 32×8 LED matrix using an Arduino Uno.
 This project creates a retro pixel-style obstacle game, where the character jumps over incoming obstacles — perfect for learning basic game logic, LED animations, and timing control.
 
